@@ -1,0 +1,17 @@
+.container {
+    height: 912px;
+}
+
+.mainIngredients {
+    flex: 1;
+    justify-content: space-between;
+    overflow: scroll;
+}
+
+.bun {
+    flex-grow: 0;
+}
+
+.ingredient:last-of-type {
+    margin-bottom: 0px;
+}
