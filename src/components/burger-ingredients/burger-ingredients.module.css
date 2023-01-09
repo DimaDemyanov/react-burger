@@ -1,5 +1,5 @@
 .container {
-    width: 600px;   
+    width: 600px;
     display: flex;
     flex-direction: column;
 }
@@ -10,7 +10,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position:relative;
+    position: relative;
 }
 
 .ingredientsGroup {
@@ -25,6 +25,11 @@
 }
 
 .allIngredients {
-    overflow: scroll;
+    overflow-y: scroll;
     height: 912px;
+    width: 600px;
+}
+
+.tabs {
+    display: flex;
 }
