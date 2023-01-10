@@ -26,10 +26,25 @@
 
 .allIngredients {
     overflow-y: scroll;
-    height: 912px;
+    min-height: fit-content;
+    max-height: 65vh;
     width: 600px;
 }
 
 .tabs {
     display: flex;
+}
+
+.ingredientImg:hover {
+    cursor: pointer;
+}
+
+.composition {
+    display: flex;
+}
+
+.compositionStat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

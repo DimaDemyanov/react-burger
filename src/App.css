@@ -1,3 +1,9 @@
+.App {
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
 .menu-container {
   display: flex;
   justify-content: center;
