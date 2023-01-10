@@ -1,0 +1,35 @@
+.container {
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ingredient {
+    width: 272px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.ingredientsGroup {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.counter {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.allIngredients {
+    overflow-y: scroll;
+    height: 912px;
+    width: 600px;
+}
+
+.tabs {
+    display: flex;
+}
