@@ -3,19 +3,15 @@ import AppHeader from './components/header/app-header';
 import BurgerIngredients from './components/burger-ingredients/burger-ingredients';
 import BurgerConstructor from './components/burger-constructor/burger-constructor';
 import React, { useEffect } from 'react';
+import { fetchIngredients } from './utils/api';
+
+const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
 
 function App() {
   const [ingredients, setIngredients] = React.useState([]);
 
   useEffect(() => {
-    fetch('https://norma.nomoreparties.space/api/ingredients')
-      .then(response => response.json())
-      .then(json => {
-        let ingredients = json.data;
-        ingredients[0].count = 1;
-        setIngredients(ingredients);
-      })
-      .catch(er => console.log(er))
+    fetchIngredients(API_URL, setIngredients);
   }, []);
 
   return (
