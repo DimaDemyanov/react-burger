@@ -1,43 +1,43 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    min-height: fit-content;
-    max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  min-height: fit-content;
+  max-height: 70vh;
 }
 
 .mainIngredients {
-    flex: 1;
-    justify-content: space-between;
-    overflow-y: scroll;
-    min-height: 200px;
-    max-height: 464px;
+  flex: 1;
+  justify-content: space-between;
+  overflow-y: scroll;
+  min-height: 200px;
+  max-height: 464px;
 }
 
 .bun {
-    flex-grow: 0;
+  flex-grow: 0;
 }
 
 .ingredient {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .ingredient:last-of-type {
-    margin-bottom: 0px;
+  margin-bottom: 0px;
 }
 
 .makeOrder {
-    display: flex;
-    align-items: center;
-    align-self: flex-end;
+  display: flex;
+  align-items: center;
+  align-self: flex-end;
 }
 
 .modalCheckMark {
-    background-color: #10021f;
-    border-radius: 100%;
-    width: 120px;
-    height: 120px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: #10021f;
+  border-radius: 100%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
