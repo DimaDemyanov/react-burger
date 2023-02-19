@@ -4,24 +4,42 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "./burger-constructor.module.css";
 import Price from "../common/price";
-import React, { useContext } from "react";
+import React from "react";
 import OrderDetails from "./order-details";
-import IngredientsContext from "../../services/contexts";
-import { postOrder } from "../../utils/api";
 import MainIngredient from "./main-ingredient";
 import BURGER_API_URL from "../../config/api";
+import { useSelector } from "react-redux";
+import { ADD_CONSTRUCTOR_INGREDIENT, postOrder } from "../../services/actions";
+import { useDispatch } from "react-redux";
+import { useDrop } from "react-dnd";
 
 const BurgerConstructor = () => {
-  const ingredients = useContext(IngredientsContext);
+  const { constructorIngredients: { bun, ingredients } , orderNumber } = useSelector(
+    (state) => state
+  );
 
-  const bun = ingredients.find((ingredient) => ingredient.type === "bun");
+  const dispatch = useDispatch();
+
+  const [, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop({ ingredient }) {
+      dispatch({type: ADD_CONSTRUCTOR_INGREDIENT, ingredient: ingredient});
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
+
   const [orderDetailsVisible, setOrderDetailsVisible] = React.useState(false);
 
   const onClickMakeOrder = async () => {
-    await postOrder(
-      `${BURGER_API_URL}/orders`,
-      [...ingredients, bun].map((ingredient) => ingredient._id),
-      setOrderNumber
+    await dispatch(
+      postOrder(
+        `${BURGER_API_URL}/orders`,
+        [...ingredients, bun, "60d3b41abdacab0026a733c9"]
+          .filter((it) => it)
+          .map((ingredient) => ingredient._id)
+      )
     );
     setOrderDetailsVisible(true);
   };
@@ -29,8 +47,6 @@ const BurgerConstructor = () => {
   const onOrderDetailsCloseClick = () => {
     setOrderDetailsVisible(false);
   };
-
-  const [orderNumber, setOrderNumber] = React.useState(0);
 
   const countSum = (ingredients) => {
     return ingredients
@@ -45,7 +61,10 @@ const BurgerConstructor = () => {
   };
 
   return (
-    <div className={`${constructorStyles.container} ml-10 pt-25`}>
+    <div
+      className={`${constructorStyles.container} ml-10 pt-25`}
+      ref={dropTarget}
+    >
       {bun && (
         <ConstructorElement
           type="top"
@@ -58,9 +77,8 @@ const BurgerConstructor = () => {
       )}
       <div className={`${constructorStyles.mainIngredients} custom-scroll`}>
         {ingredients
-          .filter((ingredient) => ingredient.type !== "bun")
           .map((ingredient, index) => {
-            return <MainIngredient ingredient={ingredient} key={index} />;
+            return <MainIngredient ingredient={ingredient} key={index} index={index}/>;
           })}
       </div>
       {bun && (

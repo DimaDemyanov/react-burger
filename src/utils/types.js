@@ -7,7 +7,7 @@ const INGREDIENT_TYPE = PropTypes.shape({
   image: PropTypes.string.isRequired,
   image_mobile: PropTypes.string,
   image_large: PropTypes.string,
-  id: PropTypes.string,
+  _id: PropTypes.string,
   proteins: PropTypes.number,
   fat: PropTypes.number,
   carbohydrates: PropTypes.number,

@@ -3,6 +3,7 @@
   flex-direction: column;
   min-height: fit-content;
   max-height: 70vh;
+  width: 600px;
 }
 
 .mainIngredients {

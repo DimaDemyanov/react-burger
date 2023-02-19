@@ -1,11 +1,32 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
-import { INGREDIENTS_ARRAY_TYPE } from "../../utils/types";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import ingredientStyles from "./burger-ingredients.module.css";
 import IngredientsGroup from "./ingredient-group";
 
 const IngredientTabs = () => {
   const [current, setCurrent] = React.useState("Buns");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (let i = 0; i < entries.length; i++) {
+          if (entries[i].target.id === "bun_tab_header") {
+            setCurrent("Buns");
+          } else if (entries[i].target.id === "main_tab_header") {
+            setCurrent("Sauces");
+          } else if (entries[i].target.id === "sauce_tab_header") {
+            setCurrent("Filling");
+          }
+        }
+      },
+      { root: document.getElementById("scrollable_box") }
+    );
+    observer.observe(document.getElementById("bun_tab_header"));
+    observer.observe(document.getElementById("main_tab_header"));
+    observer.observe(document.getElementById("sauce_tab_header"));
+  }, []);
+
   return (
     <div className={`${ingredientStyles.tabs} mt-5`}>
       <Tab value="Buns" active={current === "Buns"} onClick={setCurrent}>
@@ -21,7 +42,10 @@ const IngredientTabs = () => {
   );
 };
 
-const BurgerIngredients = ({ ingredients }) => {
+const BurgerIngredients = () => {
+  const ingredients = useSelector(state => state.ingredients);
+  
+
   return (
     <section className={ingredientStyles.container}>
       <p className="text text_type_main-large mt-10">Соберите бургер</p>
@@ -45,10 +69,6 @@ const BurgerIngredients = ({ ingredients }) => {
       </div>
     </section>
   );
-};
-
-BurgerIngredients.propTypes = {
-  ingredients: INGREDIENTS_ARRAY_TYPE,
 };
 
 export default BurgerIngredients;

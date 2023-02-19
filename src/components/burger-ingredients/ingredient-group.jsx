@@ -11,14 +11,14 @@ const TYPES = {
 
 const IngredientsGroup = ({ type, ingredients }) => {
   return (
-    <>
-      <p className="text text_type_main-medium mt-10">{TYPES[type]}</p>
+    <div id={`${type}_tab_header`}>
+      <p  className="text text_type_main-medium mt-10">{TYPES[type]}</p>
       <div className={ingredientsStyles.ingredientsGroup}>
         {ingredients.map((ingredient, index) => {
           return <Ingredient ingredient={ingredient} key={index} />;
         })}
       </div>
-    </>
+    </div>
   );
 };
 
