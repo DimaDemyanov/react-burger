@@ -23,7 +23,7 @@ const OrderDetails = (props) => {
 
 OrderDetails.propTypes = {
   ...Modal.propTypes,
-  orderNumber: PropTypes.number.isRequired,
+  orderNumber: PropTypes.string.isRequired,
 };
 
 export default OrderDetails;

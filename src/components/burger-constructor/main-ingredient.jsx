@@ -3,14 +3,14 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch } from "react-redux";
-import {
-  MOVE_INGREDIENT,
-  REMOVE_CONSTRUCTOR_INGREDIENT,
-} from "../../services/actions";
 import { INGREDIENT_TYPE } from "../../utils/types";
 import constructorStyles from "./burger-constructor.module.css";
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
+import {
+  MOVE_INGREDIENT,
+  REMOVE_CONSTRUCTOR_INGREDIENT,
+} from "../../services/actions/constructor-ingredients";
 
 const MainIngredient = ({ ingredient, index }) => {
   const dispatch = useDispatch();

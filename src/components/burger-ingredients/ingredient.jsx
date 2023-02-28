@@ -3,8 +3,8 @@ import Price from "../common/price";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { INGREDIENT_TYPE } from "../../utils/types";
 import { useDispatch } from "react-redux";
-import { SHOW_INGREDIENT_DETAILS } from "../../services/actions";
 import { useDrag } from "react-dnd";
+import { SHOW_INGREDIENT_DETAILS } from "../../services/actions/ingredient-details";
 
 const Ingredient = ({ ingredient }) => {
   const dispatch = useDispatch();

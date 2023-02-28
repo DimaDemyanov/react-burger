@@ -1,10 +1,12 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import ingredientStyles from "./burger-ingredients.module.css";
 import IngredientsGroup from "./ingredient-group";
 
-const IngredientTabs = () => {
+const IngredientTabs = ({
+  refs: { bunHeaderRef, sauceHeaderRef, mainHeaderRef },
+}) => {
   const [current, setCurrent] = React.useState("Buns");
 
   useEffect(() => {
@@ -22,9 +24,9 @@ const IngredientTabs = () => {
       },
       { root: document.getElementById("scrollable_box") }
     );
-    observer.observe(document.getElementById("bun_tab_header"));
-    observer.observe(document.getElementById("main_tab_header"));
-    observer.observe(document.getElementById("sauce_tab_header"));
+    observer.observe(bunHeaderRef.current);
+    observer.observe(sauceHeaderRef.current);
+    observer.observe(mainHeaderRef.current);
   }, []);
 
   return (
@@ -43,27 +45,33 @@ const IngredientTabs = () => {
 };
 
 const BurgerIngredients = () => {
-  const ingredients = useSelector(state => state.ingredients);
-  
+  const ingredients = useSelector((state) => state.ingredients);
+
+  const bunHeaderRef = useRef();
+  const sauceHeaderRef = useRef();
+  const mainHeaderRef = useRef();
 
   return (
     <section className={ingredientStyles.container}>
       <p className="text text_type_main-large mt-10">Соберите бургер</p>
-      <IngredientTabs />
+      <IngredientTabs refs={{ bunHeaderRef, sauceHeaderRef, mainHeaderRef }} />
       <div className={`${ingredientStyles.allIngredients}  custom-scroll`}>
         <IngredientsGroup
           type={"bun"}
           ingredients={ingredients.filter((it) => it.type === "bun")}
+          tabRef={bunHeaderRef}
           key={0}
         />
         <IngredientsGroup
           type={"sauce"}
           ingredients={ingredients.filter((it) => it.type === "sauce")}
+          tabRef={sauceHeaderRef}
           key={1}
         />
         <IngredientsGroup
           type={"main"}
           ingredients={ingredients.filter((it) => it.type === "main")}
+          tabRef={mainHeaderRef}
           key={2}
         />
       </div>

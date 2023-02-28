@@ -7,23 +7,25 @@ import Price from "../common/price";
 import React from "react";
 import OrderDetails from "./order-details";
 import MainIngredient from "./main-ingredient";
-import BURGER_API_URL from "../../config/api";
 import { useSelector } from "react-redux";
-import { ADD_CONSTRUCTOR_INGREDIENT, postOrder } from "../../services/actions";
 import { useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
+import { v4 as uuidv4 } from "uuid";
+import { ADD_CONSTRUCTOR_INGREDIENT } from "../../services/actions/constructor-ingredients";
+import { postOrder } from "../../services/actions/send-order";
 
 const BurgerConstructor = () => {
-  const { constructorIngredients: { bun, ingredients } , orderNumber } = useSelector(
-    (state) => state
-  );
+  const {
+    constructorIngredients: { bun, ingredients },
+    orderNumber,
+  } = useSelector((state) => state);
 
   const dispatch = useDispatch();
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",
     drop({ ingredient }) {
-      dispatch({type: ADD_CONSTRUCTOR_INGREDIENT, ingredient: ingredient});
+      dispatch({ type: ADD_CONSTRUCTOR_INGREDIENT, ingredient, id: uuidv4() });
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -35,8 +37,7 @@ const BurgerConstructor = () => {
   const onClickMakeOrder = async () => {
     await dispatch(
       postOrder(
-        `${BURGER_API_URL}/orders`,
-        [...ingredients, bun, "60d3b41abdacab0026a733c9"]
+        [bun, ...ingredients, bun]
           .filter((it) => it)
           .map((ingredient) => ingredient._id)
       )
@@ -49,15 +50,9 @@ const BurgerConstructor = () => {
   };
 
   const countSum = (ingredients) => {
-    return ingredients
-      .map((ingredient) => {
-        if (ingredient.type === "bun") {
-          return ingredient.price * 2;
-        } else {
-          return ingredient.price;
-        }
-      })
-      .reduce((partialSum, a) => partialSum + a, 0);
+    return ingredients.reduce((partialSum, a) => partialSum + a.price, 0) + bun
+      ? bun.price * 2
+      : 0;
   };
 
   return (
@@ -76,10 +71,11 @@ const BurgerConstructor = () => {
         />
       )}
       <div className={`${constructorStyles.mainIngredients} custom-scroll`}>
-        {ingredients
-          .map((ingredient, index) => {
-            return <MainIngredient ingredient={ingredient} key={index} index={index}/>;
-          })}
+        {ingredients.map((ingredient, index) => {
+          return (
+            <MainIngredient ingredient={ingredient} key={index} index={index} />
+          );
+        })}
       </div>
       {bun && (
         <ConstructorElement
@@ -95,14 +91,16 @@ const BurgerConstructor = () => {
       <div className={`${constructorStyles.makeOrder} mt-10`}>
         <Price price={countSum(ingredients)} textSize="medium" />
         <div className="ml-10">
-          <Button
-            htmlType="button"
-            type="primary"
-            size="medium"
-            onClick={onClickMakeOrder}
-          >
-            Оформить заказ
-          </Button>
+          {ingredients.length > 0 && bun && (
+            <Button
+              htmlType="button"
+              type="primary"
+              size="medium"
+              onClick={onClickMakeOrder}
+            >
+              Оформить заказ
+            </Button>
+          )}
         </div>
       </div>
       {orderDetailsVisible && (

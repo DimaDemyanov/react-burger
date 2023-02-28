@@ -3,12 +3,12 @@ import AppHeader from "../header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { useEffect } from "react";
-import BURGER_API_URL from "../../config/api";
 import { useDispatch, useSelector } from "react-redux";
-import { getIngredients, HIDE_INGREDIENT_DETAILS } from "../../services/actions";
 import IngredientDetails from "../burger-ingredients/ingredient-details";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { HIDE_INGREDIENT_DETAILS } from "../../services/actions/ingredient-details";
+import { getIngredients } from "../../services/actions/ingredients";
 
 function App() {
   const { ingredients, shownIngredient } = useSelector((state) => state);
@@ -22,7 +22,7 @@ function App() {
   
 
   useEffect(() => {
-    dispatch(getIngredients(`${BURGER_API_URL}/ingredients`));
+    dispatch(getIngredients());
   }, [dispatch]);
 
   return (
