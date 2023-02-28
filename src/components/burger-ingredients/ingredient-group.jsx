@@ -9,16 +9,16 @@ const TYPES = {
   sauce: "Соусы",
 };
 
-const IngredientsGroup = ({ type, ingredients }) => {
+const IngredientsGroup = ({ type, ingredients, tabRef }) => {
   return (
-    <>
-      <p className="text text_type_main-medium mt-10">{TYPES[type]}</p>
+    <div id={`${type}_tab_header`} ref={tabRef}>
+      <p  className="text text_type_main-medium mt-10">{TYPES[type]}</p>
       <div className={ingredientsStyles.ingredientsGroup}>
         {ingredients.map((ingredient, index) => {
           return <Ingredient ingredient={ingredient} key={index} />;
         })}
       </div>
-    </>
+    </div>
   );
 };
 

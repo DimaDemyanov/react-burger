@@ -1,15 +1,25 @@
+import { composeWithDevTools } from "@redux-devtools/extension";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import { applyMiddleware, createStore } from "redux";
 import App from "./components/app/App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+import { rootReducer } from "./services/reducers";
+import reduxThunk from 'redux-thunk';
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(reduxThunk)));
+
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 
