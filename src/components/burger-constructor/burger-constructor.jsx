@@ -10,8 +10,7 @@ import MainIngredient from "./main-ingredient";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
-import { v4 as uuidv4 } from "uuid";
-import { ADD_CONSTRUCTOR_INGREDIENT } from "../../services/actions/constructor-ingredients";
+import { ADD_CONSTRUCTOR_INGREDIENT, createAddConstructorIngredientAction } from "../../services/actions/constructor-ingredients";
 import { postOrder } from "../../services/actions/send-order";
 
 const BurgerConstructor = () => {
@@ -25,7 +24,7 @@ const BurgerConstructor = () => {
   const [, dropTarget] = useDrop({
     accept: "ingredient",
     drop({ ingredient }) {
-      dispatch({ type: ADD_CONSTRUCTOR_INGREDIENT, ingredient, id: uuidv4() });
+      dispatch(createAddConstructorIngredientAction(ingredient));
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -35,7 +34,7 @@ const BurgerConstructor = () => {
   const [orderDetailsVisible, setOrderDetailsVisible] = React.useState(false);
 
   const onClickMakeOrder = async () => {
-    await dispatch(
+    dispatch(
       postOrder(
         [bun, ...ingredients, bun]
           .filter((it) => it)
@@ -50,9 +49,10 @@ const BurgerConstructor = () => {
   };
 
   const countSum = (ingredients) => {
-    return ingredients.reduce((partialSum, a) => partialSum + a.price, 0) + bun
-      ? bun.price * 2
-      : 0;
+    return (
+      ingredients.reduce((partialSum, a) => partialSum + a.price, 0) +
+      (bun ? bun.price * 2 : 0)
+    );
   };
 
   return (

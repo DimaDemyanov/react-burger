@@ -1,4 +1,3 @@
-import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Modal } from "../common/modal";
 import constructorStyles from "./burger-constructor.module.css";
 import PropTypes from "prop-types";
@@ -9,7 +8,6 @@ const OrderDetails = (props) => {
       <p className="text text_type_digits-large mt-4">{props.orderNumber}</p>
       <p className="text text_type_main-medium mt-8">идентификатор заказа</p>
       <div className={`${constructorStyles.modalCheckMark} mt-15`}>
-        <CheckMarkIcon type="primary" />
       </div>
       <p className="text text_type_main-small mt-15">
         Ваш заказ начали готовить
