@@ -1,10 +1,19 @@
 .App {
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   overflow: hidden;
 }
 
 .menu-container {
   display: flex;
   justify-content: center;
+}
+
+.auth_link,
+.auth_link:link,
+.auth_link:active {
+  color: #4c4cff;
+  text-decoration: none;
+  cursor: pointer;
 }

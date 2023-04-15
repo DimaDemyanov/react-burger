@@ -10,14 +10,17 @@ import MainIngredient from "./main-ingredient";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
-import { ADD_CONSTRUCTOR_INGREDIENT, createAddConstructorIngredientAction } from "../../services/actions/constructor-ingredients";
+import { createAddConstructorIngredientAction } from "../../services/actions/constructor-ingredients";
 import { postOrder } from "../../services/actions/send-order";
+import { useNavigate } from "react-router-dom";
 
 const BurgerConstructor = () => {
   const {
     constructorIngredients: { bun, ingredients },
     orderNumber,
+    auth: { isLoggedIn },
   } = useSelector((state) => state);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -34,6 +37,9 @@ const BurgerConstructor = () => {
   const [orderDetailsVisible, setOrderDetailsVisible] = React.useState(false);
 
   const onClickMakeOrder = async () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
     dispatch(
       postOrder(
         [bun, ...ingredients, bun]

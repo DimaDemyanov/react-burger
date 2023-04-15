@@ -48,3 +48,9 @@
   flex-direction: column;
   align-items: center;
 }
+
+.ingredientDetailsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
