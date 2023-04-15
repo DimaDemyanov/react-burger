@@ -15,7 +15,7 @@ import { NotFound } from "../pages/not-found";
 import ProtectedRouteElement from "../utils/protected-route";
 import { ProfileInfo } from "../profile-info/profile-info";
 import { Modal } from "../common/modal";
-import "./App.css";
+import "./app.css";
 import Preloader from "../preloader/preloader";
 import { ProfileOrders } from "../profile-orders/profile-orders";
 
@@ -50,62 +50,64 @@ function App() {
         <div className="App">
           <AppHeader />
 
-          <Routes location={background || location}>
-            <Route path="/" element={<Constructor />} />
-            <Route
-              path="/login"
-              element={
-                <ProtectedRouteElement onlyUnAuth={true}>
-                  <Login />
-                </ProtectedRouteElement>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <ProtectedRouteElement onlyUnAuth={true}>
-                  <Register />
-                </ProtectedRouteElement>
-              }
-            />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/profile" element={<Profile />}>
+          <div className="main">
+            <Routes location={background || location}>
+              <Route path="/" element={<Constructor />} />
               <Route
-                index
+                path="/login"
                 element={
-                  <ProtectedRouteElement onlyUnAuth={false}>
-                    <ProfileInfo />
+                  <ProtectedRouteElement onlyUnAuth={true}>
+                    <Login />
                   </ProtectedRouteElement>
                 }
               />
               <Route
-                path="orders"
+                path="/register"
                 element={
-                  <ProtectedRouteElement onlyUnAuth={false}>
-                    <ProfileOrders />
+                  <ProtectedRouteElement onlyUnAuth={true}>
+                    <Register />
                   </ProtectedRouteElement>
                 }
               />
-            </Route>
-            <Route path="/ingredients/:id" element={<IngredientDetails />} />
-            <Route path="/*" element={<NotFound />} />
-          </Routes>
-          {background && (
-            <Routes>
-              <Route
-                path="/ingredients/:id"
-                element={
-                  <Modal
-                    onCloseClick={closeIngredientDetails}
-                    header={"Детали ингредиента"}
-                  >
-                    <IngredientDetails />
-                  </Modal>
-                }
-              />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/profile" element={<Profile />}>
+                <Route
+                  index
+                  element={
+                    <ProtectedRouteElement onlyUnAuth={false}>
+                      <ProfileInfo />
+                    </ProtectedRouteElement>
+                  }
+                />
+                <Route
+                  path="orders"
+                  element={
+                    <ProtectedRouteElement onlyUnAuth={false}>
+                      <ProfileOrders />
+                    </ProtectedRouteElement>
+                  }
+                />
+              </Route>
+              <Route path="/ingredients/:id" element={<IngredientDetails />} />
+              <Route path="/*" element={<NotFound />} />
             </Routes>
-          )}
+            {background && (
+              <Routes>
+                <Route
+                  path="/ingredients/:id"
+                  element={
+                    <Modal
+                      onCloseClick={closeIngredientDetails}
+                      header={"Детали ингредиента"}
+                    >
+                      <IngredientDetails />
+                    </Modal>
+                  }
+                />
+              </Routes>
+            )}
+          </div>
         </div>
       )}
     </>
