@@ -11,8 +11,7 @@ const HeaderButton = ({ name, Icon, type, isActive = true }) => {
   let textColor = isActive ? "" : " text_color_inactive";
   return (
     <a
-      className={`${headerStyles.button} ${textColor} ml-2 mt-4 mb-4 text text_type_main-default`}
-    href="/">
+      className={`${headerStyles.button} ${textColor} ml-2 mt-4 mb-4 text text_type_main-default`} href="/">
       <Icon className="ml-5" type={type} />
       <p className="ml-2 mr-5">{name}</p>
     </a>
