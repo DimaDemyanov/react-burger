@@ -7,11 +7,12 @@ import {
 import headerStyles from "./app-header.module.css";
 import PropTypes from "prop-types";
 
-const HeaderButton = ({ name, Icon, type, isActive = true }) => {
+const HeaderButton = ({ name, Icon, type, isActive = true, href = "/" }) => {
   let textColor = isActive ? "" : " text_color_inactive";
   return (
     <a
-      className={`${headerStyles.button} ${textColor} ml-2 mt-4 mb-4 text text_type_main-default`} href="/">
+      className={`${headerStyles.button} ${textColor} ml-2 mt-4 mb-4 text text_type_main-default`}
+    href={href}>
       <Icon className="ml-5" type={type} />
       <p className="ml-2 mr-5">{name}</p>
     </a>
@@ -47,6 +48,7 @@ const AppHeader = () => {
             Icon={ProfileIcon}
             type="secondary"
             isActive={false}
+            href="/profile"
           />
         </div>
       </nav>

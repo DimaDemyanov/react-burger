@@ -1,4 +1,4 @@
-import { sendOrderAPI } from "../../utils/burger-api";
+import { postOrderRequest } from "../../utils/burger-api";
 
 export const GET_ORDER_NUMBER = "GET_ORDER_NUMBER";
 export const GET_ORDER_NUMBER_SUCCESS = "GET_ORDER_NUMBER_SUCCESS";
@@ -9,7 +9,7 @@ export function postOrder(ingredientIds) {
     dispatch({
       type: GET_ORDER_NUMBER,
     });
-    sendOrderAPI(ingredientIds)
+    postOrderRequest(ingredientIds)
       .then((json) => {
         dispatch({
           type: GET_ORDER_NUMBER_SUCCESS,

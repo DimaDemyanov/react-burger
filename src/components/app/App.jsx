@@ -9,6 +9,21 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { HIDE_INGREDIENT_DETAILS } from "../../services/actions/ingredient-details";
 import { getIngredients } from "../../services/actions/ingredients";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Login } from "../pages/login";
+import { Register } from "../pages/register";
+import { ForgotPassword } from "../pages/forgot-password";
+import { ResetPassword } from "../pages/reset-password";
+import { Profile } from "../pages/profile";
+
+function Main({ ingredients, constructorIngredients }) {
+  return (
+    <div className="menu-container">
+      <BurgerIngredients ingredients={ingredients} />
+      <BurgerConstructor />
+    </div>
+  );
+}
 
 function App() {
   const { ingredients, shownIngredient } = useSelector((state) => state);
@@ -16,10 +31,9 @@ function App() {
 
   const closeIngredientDetails = () => {
     dispatch({
-      type: HIDE_INGREDIENT_DETAILS
-    })
+      type: HIDE_INGREDIENT_DETAILS,
+    });
   };
-  
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -29,10 +43,31 @@ function App() {
     <div className="App">
       <AppHeader />
       <DndProvider backend={HTML5Backend}>
-        <div className="menu-container">
-          <BurgerIngredients ingredients={ingredients} />
-          <BurgerConstructor />
-        </div>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Main
+                  ingredients={ingredients}
+                />
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/ingredients/:id"
+              element={
+                <Main
+                  ingredients={ingredients}
+                />
+              }
+            />
+          </Routes>
+        </BrowserRouter>
       </DndProvider>
       {shownIngredient !== null && (
         <IngredientDetails
