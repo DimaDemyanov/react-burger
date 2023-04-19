@@ -2,7 +2,7 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { resetPasswordRequest } from "../../utils/burger-api";
 import forgotPasswordStyles from "./forgot-password.module.css";
@@ -15,7 +15,8 @@ export const ForgotPassword = () => {
     setEmail(e.target.value);
   };
 
-  const onClick = async (e) => {
+  const onSubmit = async (e) => {
+    e.preventDefault();
     await resetPasswordRequest(email)
       .then((res) => {
         if (res.success)
@@ -26,31 +27,31 @@ export const ForgotPassword = () => {
   };
 
   return (
-    <>
-      <div className={`${forgotPasswordStyles.forgotPasswordContainer}`}>
-        <div className={`${forgotPasswordStyles.forgotPasswordForm}`}>
-          <p className="text text_type_main-medium mt-6">
-            Восстановление пароля
-          </p>
-          <div className="mt-6">
-            <Input placeholder={"Укажите e-mail"} onChange={onChange} value={email} />
-          </div>
-          <div className="mt-6">
-            <Button htmlType="button" type="primary" size="medium" onClick={onClick}>
-              Восстановить
-            </Button>
-          </div>
-          <p className="text text_type_main-default text_color_inactive mt-20">
-            Вспомнили пароль?
-            <a
-              className={`auth_link ml-2 mt-4 mb-4 text text_type_main-default`}
-              href="/login"
-            >
-              Войти
-            </a>
-          </p>
+    <form onSubmit={onSubmit}>
+      <div className={`${forgotPasswordStyles.forgotPasswordForm}`}>
+        <p className="text text_type_main-medium mt-6">Восстановление пароля</p>
+        <div className="mt-6">
+          <Input
+            placeholder={"Укажите e-mail"}
+            onChange={onChange}
+            value={email}
+          />
         </div>
+        <div className="mt-6">
+          <Button htmlType="submit" type="primary" size="medium">
+            Восстановить
+          </Button>
+        </div>
+        <p className="text text_type_main-default text_color_inactive mt-20">
+          Вспомнили пароль?
+          <Link
+            className={`auth_link ml-2 mt-4 mb-4 text text_type_main-default`}
+            to="/login"
+          >
+            Войти
+          </Link>
+        </p>
       </div>
-    </>
+    </form>
   );
 };

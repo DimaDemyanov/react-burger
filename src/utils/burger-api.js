@@ -39,7 +39,7 @@ export const getIngredientsRequest = async () => {
 };
 
 export const postOrderRequest = async (ingredientsId) => {
-  return await request(`${BURGER_BASE_API}/orders`, {
+  return await requestWithRefresh(`${BURGER_BASE_API}/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

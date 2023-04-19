@@ -20,10 +20,14 @@ CompositionStat.propTypes = {
 };
 
 const IngredientDetails = () => {
-  const { id } = useParams();
+  const { id } = useParams();  
   const ingredients = useSelector((store) => store.ingredients);
 
   const ingredient = ingredients.find((el) => el._id === id);
+  
+  if (!ingredient) {
+    return null;
+  }
 
   return (
     <div className={`${ingredientsStyles.ingredientDetailsContainer}`}>

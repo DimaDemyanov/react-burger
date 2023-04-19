@@ -20,9 +20,10 @@ import Preloader from "../preloader/preloader";
 import { ProfileOrders } from "../profile-orders/profile-orders";
 
 function App() {
-  const {
-    auth: { authChecked },
-  } = useSelector((state) => state);
+  const [authChecked] = useState(
+    useSelector((state) => state.auth || state.auth.authChecked)
+  );
+
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -69,8 +70,22 @@ function App() {
                   </ProtectedRouteElement>
                 }
               />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route
+                path="/forgot-password"
+                element={
+                  <ProtectedRouteElement onlyUnAuth={true}>
+                    <ForgotPassword />
+                  </ProtectedRouteElement>
+                }
+              />
+              <Route
+                path="/reset-password"
+                element={
+                  <ProtectedRouteElement onlyUnAuth={true}>
+                    <ResetPassword />
+                  </ProtectedRouteElement>
+                }
+              />
               <Route path="/profile" element={<Profile />}>
                 <Route
                   index

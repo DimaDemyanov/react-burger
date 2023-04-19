@@ -4,14 +4,20 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { resetPasswordConfirm } from "../../utils/burger-api";
 import resetPasswordStyles from "./reset-password.module.css";
 
 export const ResetPassword = () => {
+  const location = useLocation();
+  const { state } = location;
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
   const navigate = useNavigate();
+
+  if (!state?.hasAccess) {
+    return <Navigate to={"/forgot-password"} />;
+  }
 
   const onChangePassword = (e) => {
     setPassword(e.target.value);
@@ -21,43 +27,60 @@ export const ResetPassword = () => {
     setCode(e.target.value);
   };
 
-  const onClick = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     resetPasswordConfirm(password, code)
       .then((res) => {
-        if (res.success) return navigate("/login");
-        if (!res.success) return Promise.reject(res);
+        if (res.success) {
+          return navigate("/login");
+        } else {
+          return Promise.reject(res);
+        }
       })
       .catch((err) => Promise.reject(err));
   };
 
   return (
-    <>
-      <div className={`${resetPasswordStyles.resetPasswordContainer}`}>
+    <div className={`${resetPasswordStyles.resetPasswordContainer}`}>
+      <form onSubmit={onSubmit}>
         <div className={`${resetPasswordStyles.resetPasswordForm}`}>
-          <p className="text text_type_main-medium mt-6">Восстановление пароля</p>
+          <p className="text text_type_main-medium mt-6">
+            Восстановление пароля
+          </p>
           <div className="mt-6">
-            <PasswordInput placeholder="Введите новый пароль" onChange={onChangePassword}/>
+            <PasswordInput
+              placeholder="Введите новый пароль"
+              onChange={onChangePassword}
+              error={false}
+            />
           </div>
           <div className="mt-6">
-            <Input placeholder={"Введите код из письма"} onChange={onChangeCode} value={code}/>
+            <Input
+              placeholder={"Введите код из письма"}
+              onChange={onChangeCode}
+              value={code}
+            />
           </div>
           <div className="mt-6">
-            <Button htmlType="button" type="primary" size="medium" onClick={onClick}>
+            <Button
+              htmlType="submit"
+              type="primary"
+              size="medium"
+            >
               Сохранить
             </Button>
           </div>
           <p className="text text_type_main-default text_color_inactive mt-20">
             Вспомнили пароль?
-            <a
+            <Link
               className={`auth_link ml-2 mt-4 mb-4 text text_type_main-default`}
-              href="/login"
+              to="/login"
             >
               Войти
-            </a>
+            </Link>
           </p>
         </div>
-      </div>
-    </>
+      </form>
+    </div>
   );
 };
