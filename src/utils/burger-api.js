@@ -16,8 +16,7 @@ const checkResponse = (res) => {
 
 export const requestWithRefresh = async (url, options) => {
   try {
-    const res = await request(url, options);
-    return res.catch();
+    return await request(url, options);
   } catch (err) {
     if (err.message === "jwt expired" || "You should be authorised") {
       const refreshData = await updateTokenRequest();

@@ -5,7 +5,7 @@ function useForm(inputValues) {
 
   const handleChange = (event) => {
     const { value, name } = event.target;
-    console.log(name + " hi " + value);
+    
     setValues((currentState) => {
       const newState = {
         ...currentState,

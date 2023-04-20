@@ -20,9 +20,7 @@ import Preloader from "../preloader/preloader";
 import { ProfileOrders } from "../profile-orders/profile-orders";
 
 function App() {
-  const [authChecked] = useState(
-    useSelector((state) => state.auth || state.auth.authChecked)
-  );
+  const authChecked = useSelector(state => state.auth.authChecked);
 
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -38,10 +36,13 @@ function App() {
   useEffect(() => {
     dispatch(getIngredients());
     dispatch(getUser());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (authChecked) {
       setLoading(false);
     }
-  }, [authChecked, dispatch]);
+  }, [authChecked]);
 
   return (
     <>
@@ -86,23 +87,16 @@ function App() {
                   </ProtectedRouteElement>
                 }
               />
-              <Route path="/profile" element={<Profile />}>
-                <Route
-                  index
-                  element={
-                    <ProtectedRouteElement onlyUnAuth={false}>
-                      <ProfileInfo />
-                    </ProtectedRouteElement>
-                  }
-                />
-                <Route
-                  path="orders"
-                  element={
-                    <ProtectedRouteElement onlyUnAuth={false}>
-                      <ProfileOrders />
-                    </ProtectedRouteElement>
-                  }
-                />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRouteElement onlyUnAuth={false}>
+                    <Profile />
+                  </ProtectedRouteElement>
+                }
+              >
+                <Route index element={<ProfileInfo />} />
+                <Route path="orders" element={<ProfileOrders />} />
               </Route>
               <Route path="/ingredients/:id" element={<IngredientDetails />} />
               <Route path="/*" element={<NotFound />} />
