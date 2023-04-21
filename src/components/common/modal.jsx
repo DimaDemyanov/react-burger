@@ -41,7 +41,7 @@ const Modal = ({ header, onCloseClick, children }) => {
 Modal.propTypes = {
   header: PropTypes.string,
   onCloseClick: PropTypes.func.isRequired,
-  children: PropTypes.arrayOf(PropTypes.element),
+  children: PropTypes.element,
 };
 
 const ModalOverlay = ({ onCloseClick }) => {

@@ -2,18 +2,15 @@ import ingredientsStyles from "./burger-ingredients.module.css";
 import Price from "../common/price";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { INGREDIENT_TYPE } from "../../utils/types";
-import { useDispatch } from "react-redux";
 import { useDrag } from "react-dnd";
-import { SHOW_INGREDIENT_DETAILS } from "../../services/actions/ingredient-details";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Ingredient = ({ ingredient }) => {
-  const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const openIngredientDetails = () => {
-    dispatch({
-      type: SHOW_INGREDIENT_DETAILS,
-      ingredient: ingredient,
-    });
+    navigate(`/ingredients/${ingredient._id}`, { state: { background: location }});
   };
 
   const [, dragRef] = useDrag({

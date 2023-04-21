@@ -1,7 +1,7 @@
 import ingredientsStyles from "./burger-ingredients.module.css";
-import { Modal } from "../common/modal";
-import { INGREDIENT_TYPE } from "../../utils/types";
 import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const CompositionStat = ({ type, stat }) => {
   return (
@@ -19,34 +19,27 @@ CompositionStat.propTypes = {
   stat: PropTypes.number.isRequired,
 };
 
-const IngredientDetails = (props) => {
+const IngredientDetails = () => {
+  const { id } = useParams();  
+  const ingredients = useSelector((store) => store.ingredients);
+
+  const ingredient = ingredients.find((el) => el._id === id);
+  
+  if (!ingredient) {
+    return null;
+  }
+
   return (
-    <Modal {...props}>
-      <img
-        src={props.ingredient.image_large}
-        className={`ml-4`}
-        alt="ingredient"
-      />
-      <p className="text text_type_main-medium mt-4">{props.ingredient.name}</p>
+    <div className={`${ingredientsStyles.ingredientDetailsContainer}`}>
+      <img src={ingredient.image_large} className={`ml-4`} alt="ingredient" />
+      <p className="text text_type_main-medium mt-4">{ingredient.name}</p>
       <div className={`${ingredientsStyles.composition} mt-8 mb-15`}>
-        <CompositionStat
-          type="Калории, ккал"
-          stat={props.ingredient.calories}
-        />
-        <CompositionStat type="Белки, г" stat={props.ingredient.proteins} />
-        <CompositionStat type="Жиры, г" stat={props.ingredient.fat} />
-        <CompositionStat
-          type="Углеводы, г"
-          stat={props.ingredient.carbohydrates}
-        />
+        <CompositionStat type="Калории, ккал" stat={ingredient.calories} />
+        <CompositionStat type="Белки, г" stat={ingredient.proteins} />
+        <CompositionStat type="Жиры, г" stat={ingredient.fat} />
+        <CompositionStat type="Углеводы, г" stat={ingredient.carbohydrates} />
       </div>
-    </Modal>
+    </div>
   );
 };
-
-IngredientDetails.propTypes = {
-  ...Modal.propTypes,
-  ingredient: INGREDIENT_TYPE,
-};
-
 export default IngredientDetails;

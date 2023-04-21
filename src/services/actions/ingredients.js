@@ -1,4 +1,4 @@
-import { getIngredientsAPI } from "../../utils/burger-api";
+import { getIngredientsRequest } from "../../utils/burger-api";
 
 export const GET_INGREDIENTS = "GET_INGREDIENTS";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
@@ -9,7 +9,7 @@ export function getIngredients() {
       dispatch({
         type: GET_INGREDIENTS,
       });
-      getIngredientsAPI()
+      getIngredientsRequest()
         .then((json) => {
           let ingredients = json.data;
           dispatch({
