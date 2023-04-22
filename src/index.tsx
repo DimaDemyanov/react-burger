@@ -2,12 +2,12 @@ import { composeWithDevTools } from "@redux-devtools/extension";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import { applyMiddleware, createStore } from "redux";
+import { AnyAction, applyMiddleware, createStore } from "redux";
 import App from "./components/app/app";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { rootReducer } from "./services/reducers";
-import reduxThunk from "redux-thunk";
+import reduxThunk, { ThunkDispatch } from "redux-thunk";
 import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(
@@ -18,6 +18,10 @@ const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(reduxThunk))
 );
+
+export type RootState = ReturnType<typeof rootReducer>;
+
+export type AppDispatch = ThunkDispatch<RootState, any, AnyAction>;
 
 root.render(
   <BrowserRouter>
