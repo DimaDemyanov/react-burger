@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FC } from "react";
 import { TIngredient } from "../../utils/types";
-import { RootState } from "../..";
+import { RootState } from "../../services/store";
 
 interface ICompositionStatProps {
   type: string,

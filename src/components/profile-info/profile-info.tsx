@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { TUpdateUserForm, updateUser } from "../../services/actions/auth";
 import useForm from "../hooks/useForm";
-import { AppDispatch, RootState } from "../..";
+import { AppDispatch, RootState } from "../../services/store";
 
 export const ProfileInfo = () => {
   const { user } = useSelector<RootState, any>((store) => store.auth);

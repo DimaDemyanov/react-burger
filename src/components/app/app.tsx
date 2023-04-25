@@ -18,7 +18,7 @@ import { Modal } from "../common/modal";
 import "./app.css";
 import Preloader from "../preloader/preloader";
 import { ProfileOrders } from "../profile-orders/profile-orders";
-import { AppDispatch, RootState } from "../..";
+import { AppDispatch, RootState } from "../../services/store";
 
 function App() {
   const authChecked = useSelector<RootState>(state => state.auth.authChecked);

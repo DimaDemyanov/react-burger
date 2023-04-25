@@ -7,7 +7,7 @@ import loginStyles from "./login.module.css";
 import { useDispatch } from "react-redux";
 import { login } from "../../services/actions/auth";
 import { Link } from "react-router-dom";
-import { AppDispatch } from "../..";
+import { AppDispatch } from "../../services/store";
 
 export const Login = () => {
   const [email, setEmail] = useState("");

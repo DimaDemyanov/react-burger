@@ -7,7 +7,7 @@ import registerStyles from "./register.module.css";
 import { useDispatch } from "react-redux";
 import { register } from "../../services/actions/auth";
 import { Link } from "react-router-dom";
-import { AppDispatch } from "../..";
+import { AppDispatch } from "../../services/store";
 
 export const Register = () => {
   const [name, setName] = useState<string>("");

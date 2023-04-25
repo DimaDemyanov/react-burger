@@ -3,7 +3,7 @@ import React, { FC, RefObject, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import ingredientStyles from "./burger-ingredients.module.css";
 import IngredientsGroup, { Type } from "./ingredient-group";
-import { RootState } from "../..";
+import { RootState } from "../../services/store";
 import { TIngredient } from "../../utils/types";
 
 interface IIngredientTabs {

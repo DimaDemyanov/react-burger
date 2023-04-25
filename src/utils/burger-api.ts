@@ -1,26 +1,30 @@
-import { TLoginForm, TRegisterForm, TUpdateUserForm } from "../services/actions/auth";
+import {
+  TLoginForm,
+  TRegisterForm,
+  TUpdateUserForm,
+} from "../services/actions/auth";
 import { getCookie, setCookie } from "./cookie";
+import { TIngredient } from "./types";
 
 const BURGER_BASE_API = "https://norma.nomoreparties.space/api";
 
-async function request(url: string, options?: RequestInit) {
-  return fetch(url, options).then(checkResponse);
+async function request<T>(url: string, options?: RequestInit): Promise<T> {
+  return fetch(url, options).then<T, T>(checkResponse);
 }
 
-const checkResponse = (res: Response): Promise<any> => {
-  if (!res.ok) {
-    return res.json().then((err) => Promise.reject(new Error(err.message)));
-  } else {
-    return res.json();
-  }
+const checkResponse = <T>(res: Response): Promise<T> => {
+  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const requestWithRefresh = async (url: string, options: RequestInit): Promise<any> => {
+export const requestWithRefresh = async <T>(
+  url: string,
+  options: RequestInit
+): Promise<T> => {
   try {
     return await request(url, options);
   } catch (err) {
     if (!(err instanceof Error)) {
-      throw err;
+      return Promise.reject(err);
     }
     if (err.message === "jwt expired" || "You should be authorised") {
       const refreshData = await updateTokenRequest();
@@ -30,45 +34,67 @@ export const requestWithRefresh = async (url: string, options: RequestInit): Pro
       localStorage.setItem("refreshToken", refreshData.refreshToken);
       setCookie(refreshData.accessToken);
       options.headers = {
-        ...options.headers, 
-        "Authorization": refreshData.accessToken
-      }
+        ...options.headers,
+        Authorization: refreshData.accessToken,
+      };
       return await request(url, options);
     } else if (err.message === "Token is invalid") {
       return Promise.reject(err);
     }
+    return Promise.reject(err);
   }
 };
 
-export const getIngredientsRequest = async (): Promise<any> => {
-  return await request(`${BURGER_BASE_API}/ingredients`);
+interface IIngredientsResponseData {
+  data: Array<TIngredient>;
+}
+
+export const getIngredientsRequest = (): Promise<IIngredientsResponseData> => {
+  return request(`${BURGER_BASE_API}/ingredients`);
 };
 
-export const postOrderRequest = async (ingredientsId: Array<string>): Promise<any> => {
+interface IPostOrderResponseData {
+  order: { number: number };
+}
+
+export const postOrderRequest = (
+  ingredientsId: Array<string>
+): Promise<IPostOrderResponseData> => {
   const headers: HeadersInit = new Headers();
   headers.set("Content-Type", "application/json");
   const token: string | undefined = getCookie("accessToken");
   token && headers.set("Authorization", token);
 
-  return await requestWithRefresh(`${BURGER_BASE_API}/orders`, {
+  return requestWithRefresh(`${BURGER_BASE_API}/orders`, {
     method: "POST",
     headers: headers,
     body: JSON.stringify({ ingredients: ingredientsId }),
   });
 };
 
-export const registerRequest = async (form: TRegisterForm): Promise<any> => {
+export const registerRequest = (
+  form: TRegisterForm
+): Promise<IUpdateTokenResponseData> => {
   const { email, password, name } = form;
-  return await request(`${BURGER_BASE_API}/auth/register`, {
+  return request(`${BURGER_BASE_API}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email: email, password: password, name: name }),
   });
 };
 
-export const loginRequest = async (form: TLoginForm): Promise<any> => {
+interface ILoginRequestResponseData {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+  user: { email: string; name: string };
+}
+
+export const loginRequest = (
+  form: TLoginForm
+): Promise<ILoginRequestResponseData> => {
   const { email, password } = form;
-  return await request(`${BURGER_BASE_API}/auth/login`, {
+  return request(`${BURGER_BASE_API}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -77,8 +103,11 @@ export const loginRequest = async (form: TLoginForm): Promise<any> => {
   });
 };
 
-export const logoutRequest = async (): Promise<any> => {
-  return await request(`${BURGER_BASE_API}/auth/logout`, {
+export const logoutRequest = (): Promise<{
+  success: boolean;
+  message: string;
+}> => {
+  return request(`${BURGER_BASE_API}/auth/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -87,8 +116,14 @@ export const logoutRequest = async (): Promise<any> => {
   });
 };
 
-export const updateTokenRequest = async (): Promise<any> => {
-  return await request(`${BURGER_BASE_API}/auth/token`, {
+interface IUpdateTokenResponseData {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export const updateTokenRequest = (): Promise<IUpdateTokenResponseData> => {
+  return request(`${BURGER_BASE_API}/auth/token`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -97,29 +132,41 @@ export const updateTokenRequest = async (): Promise<any> => {
   });
 };
 
-export const getUserRequest = async (): Promise<any> => {
-  return await requestWithRefresh(`${BURGER_BASE_API}/auth/user`, {
+interface IGetUserResponseData {
+  success: boolean;
+  user: {
+    email: string;
+    name: string;
+  };
+}
+
+export const getUserRequest = (): Promise<IGetUserResponseData> => {
+  return requestWithRefresh(`${BURGER_BASE_API}/auth/user`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": getCookie("accessToken") ?? "",
+      Authorization: getCookie("accessToken") ?? "",
     },
   });
 };
 
-export const updateUserRequest = async (inputs: TUpdateUserForm): Promise<any> => {
-  return await requestWithRefresh(`${BURGER_BASE_API}/auth/user`, {
+export const updateUserRequest = (
+  inputs: TUpdateUserForm
+): Promise<IGetUserResponseData> => {
+  return requestWithRefresh(`${BURGER_BASE_API}/auth/user`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": getCookie("accessToken") ?? "",
+      Authorization: getCookie("accessToken") ?? "",
     },
     body: JSON.stringify({ ...inputs }),
   });
 };
 
-export const resetPasswordRequest = async (email: string): Promise<any> => {
-  return await request(`${BURGER_BASE_API}/password-reset`, {
+export const resetPasswordRequest = (
+  email: string
+): Promise<{ success: boolean; message: string }> => {
+  return request(`${BURGER_BASE_API}/password-reset`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -128,8 +175,11 @@ export const resetPasswordRequest = async (email: string): Promise<any> => {
   });
 };
 
-export const resetPasswordConfirm = async (password: string, code: string): Promise<any> => {
-  return await request(`${BURGER_BASE_API}/password-reset/reset`, {
+export const resetPasswordConfirm = (
+  password: string,
+  code: string
+): Promise<{ success: boolean; message: string }> => {
+  return request(`${BURGER_BASE_API}/password-reset/reset`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

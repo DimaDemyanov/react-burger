@@ -7,7 +7,7 @@ import {
   updateUserRequest,
 } from "../../utils/burger-api";
 import { setCookie, deleteCookie } from "../../utils/cookie";
-import { ThunkAction, ThunkDispatch } from "redux-thunk";
+import { ThunkAction } from "redux-thunk";
 
 export const AUTH_REGISTER_REQUEST = "AUTH/REGISTER_REQUEST";
 export const AUTH_REGISTER_SUCCESS = "AUTH/REGISTER_SUCCESS";
@@ -35,10 +35,12 @@ export type TRegisterForm = {
   name: string;
   email: string;
   password: string;
-}
+};
 
-export function register(form: TRegisterForm): ThunkAction<void, {}, {}, AnyAction> {
-  return function (dispatch: ThunkDispatch<{}, {}, AnyAction>) {
+export function register(
+  form: TRegisterForm
+): ThunkAction<void, {}, {}, AnyAction> {
+  return function (dispatch) {
     dispatch({
       type: AUTH_REGISTER_REQUEST,
     });
@@ -65,7 +67,7 @@ export function register(form: TRegisterForm): ThunkAction<void, {}, {}, AnyActi
 export type TLoginForm = {
   email: string;
   password: string;
-}
+};
 
 export function login(form: TLoginForm): ThunkAction<void, {}, {}, AnyAction> {
   return function (dispatch: Dispatch) {
@@ -93,7 +95,7 @@ export function login(form: TLoginForm): ThunkAction<void, {}, {}, AnyAction> {
 }
 
 export function logout(): ThunkAction<void, {}, {}, AnyAction> {
-  return function (dispatch: ThunkDispatch<{}, {}, AnyAction>) {
+  return function (dispatch) {
     dispatch({
       type: AUTH_LOGOUT_REQUEST,
     });
@@ -117,7 +119,7 @@ export function logout(): ThunkAction<void, {}, {}, AnyAction> {
 }
 
 export function getUser(): ThunkAction<void, {}, {}, AnyAction> {
-  return function (dispatch: ThunkDispatch<{}, {}, AnyAction>) {
+  return function (dispatch) {
     dispatch({
       type: AUTH_GET_USER_REQUEST,
     });
@@ -143,10 +145,12 @@ export type TUpdateUserForm = {
   name: string;
   email: string;
   password?: string;
-}
+};
 
-export function updateUser(form: TUpdateUserForm): ThunkAction<void, {}, {}, AnyAction> {
-  return function (dispatch: ThunkDispatch<{}, {}, AnyAction>) {
+export function updateUser(
+  form: TUpdateUserForm
+): ThunkAction<void, {}, {}, AnyAction> {
+  return function (dispatch) {
     dispatch({
       type: AUTH_UPDATE_USER_REQUEST,
     });

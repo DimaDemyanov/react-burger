@@ -13,8 +13,8 @@ import {
 import { TIngredient } from "../../utils/types";
 
 interface IMainIngredientProps {
-  ingredient: TIngredient,
-  index: number
+  ingredient: TIngredient;
+  index: number;
 }
 
 const MainIngredient: FC<IMainIngredientProps> = ({ ingredient, index }) => {
@@ -23,7 +23,14 @@ const MainIngredient: FC<IMainIngredientProps> = ({ ingredient, index }) => {
   // Следующий код взят по сыллку от куратора из https://codesandbox.io/embed/react-dnd-rtk-ofjc4h?codemirror=1 и адаптирован под текущий проект
   const ref = useRef<HTMLDivElement>(null);
 
-  const [{ handlerId }, drop] = useDrop<any, any, any>({
+  const [{ handlerId }, drop] = useDrop<
+    {
+      ingredient: TIngredient;
+      index: number;
+    },
+    unknown,
+    any
+  >({
     accept: ["filling"],
     collect(monitor) {
       return {

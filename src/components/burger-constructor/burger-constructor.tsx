@@ -1,19 +1,19 @@
 import {
-  ConstructorElement,
   Button,
+  ConstructorElement,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import constructorStyles from "./burger-constructor.module.css";
-import Price from "../common/price";
 import React from "react";
-import OrderDetails from "./order-details";
-import MainIngredient from "./main-ingredient";
-import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { createAddConstructorIngredientAction } from "../../services/actions/constructor-ingredients";
 import { postOrder } from "../../services/actions/send-order";
-import { useNavigate } from "react-router-dom";
+import { AppDispatch } from "../../services/store";
 import { TIngredient } from "../../utils/types";
-import { AppDispatch } from "../..";
+import Price from "../common/price";
+import constructorStyles from "./burger-constructor.module.css";
+import MainIngredient from "./main-ingredient";
+import OrderDetails from "./order-details";
 
 const BurgerConstructor = () => {
   const {
@@ -25,7 +25,7 @@ const BurgerConstructor = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const [, dropTarget] = useDrop<any>({
+  const [, dropTarget] = useDrop<{ ingredient: TIngredient }>({
     accept: "ingredient",
     drop({ ingredient }) {
       dispatch(createAddConstructorIngredientAction(ingredient));

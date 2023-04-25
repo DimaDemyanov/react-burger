@@ -3,7 +3,7 @@ import styles from "./profile-navigation.module.css";
 import { useDispatch } from "react-redux";
 import { ProfileLink } from "../profile-link/profile-link";
 import { logout } from "../../services/actions/auth";
-import { AppDispatch } from "../..";
+import { AppDispatch } from "../../services/store";
 
 export function ProfileNavigation() {
   const dispatch: AppDispatch = useDispatch();
