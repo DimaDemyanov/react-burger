@@ -1,4 +1,3 @@
-import { AnyAction } from "redux";
 import {
   AUTH_REGISTER_REQUEST,
   AUTH_REGISTER_SUCCESS,
@@ -16,6 +15,7 @@ import {
   AUTH_UPDATE_USER_SUCCESS,
   AUTH_UPDATE_USER_FAILED,
   AUTH_CHECKED,
+  TUserActions,
 } from "../actions/auth";
 
 const initialState = {
@@ -39,7 +39,7 @@ const initialState = {
   authChecked: false,
 };
 
-export const authReducer = (state: any = initialState, action: AnyAction) => {
+export const auth = (state: any = initialState, action: TUserActions) => {
   switch (action.type) {
     case AUTH_REGISTER_REQUEST: {
       return {

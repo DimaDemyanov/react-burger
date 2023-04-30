@@ -8,19 +8,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createAddConstructorIngredientAction } from "../../services/actions/constructor-ingredients";
 import { postOrder } from "../../services/actions/send-order";
-import { AppDispatch } from "../../services/store";
+import { AppDispatch, useAppSelector } from "../../services/store";
 import { TIngredient } from "../../utils/types";
 import Price from "../common/price";
 import constructorStyles from "./burger-constructor.module.css";
 import MainIngredient from "./main-ingredient";
 import OrderDetails from "./order-details";
+import { countSum } from "../../utils/helpers";
 
 const BurgerConstructor = () => {
   const {
     constructorIngredients: { bun, ingredients },
     orderNumber,
     auth: { isLoggedIn },
-  } = useSelector<any, any>((state) => state);
+  } = useAppSelector((state) => state);
   const navigate = useNavigate();
 
   const dispatch: AppDispatch = useDispatch();
@@ -53,13 +54,6 @@ const BurgerConstructor = () => {
 
   const onOrderDetailsCloseClick = () => {
     setOrderDetailsVisible(false);
-  };
-
-  const countSum = (ingredients: ReadonlyArray<TIngredient>) => {
-    return (
-      ingredients.reduce((partialSum, a) => partialSum + a.price, 0) +
-      (bun ? bun.price * 2 : 0)
-    );
   };
 
   return (
@@ -96,7 +90,7 @@ const BurgerConstructor = () => {
       )}
 
       <div className={`${constructorStyles.makeOrder} mt-10`}>
-        <Price price={countSum(ingredients)} textSize="medium" />
+        <Price price={countSum(ingredients, bun)} textSize="medium" />
         <div className="ml-10">
           {ingredients.length > 0 && bun && (
             <Button

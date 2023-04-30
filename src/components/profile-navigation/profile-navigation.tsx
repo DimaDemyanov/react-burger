@@ -5,14 +5,14 @@ import { ProfileLink } from "../profile-link/profile-link";
 import { logout } from "../../services/actions/auth";
 import { AppDispatch } from "../../services/store";
 
-export function ProfileNavigation() {
+export function ProfileNavigation({ className }: { className: string }) {
   const dispatch: AppDispatch = useDispatch();
   const handleLogout = async () => {
     dispatch(logout());
   };
 
   return (
-    <nav className={styles.profile_navigation}>
+    <nav className={`${styles.profile_navigation} ${className}`}>
       <ul className="mr-15 text text_type_main-medium">
         <ProfileLink href="/profile" name="Профиль" />
         <ProfileLink href="orders" name="История заказов" />

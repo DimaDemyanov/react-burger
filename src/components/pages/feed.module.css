@@ -1,0 +1,23 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.mainSection {
+  width: 600px;
+}
+
+.main-section:nth-child(2) {
+  width: 640px;
+}
+
+.sections {
+  display: flex;
+  justify-content: space-between;
+}
+
+.heading {
+  align-self: first baseline;
+  max-width: 1280px;
+  margin: 20px;
+}

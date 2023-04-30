@@ -2,15 +2,15 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import profileInfoStyles from "./profile-info.module.css";
-import { useSelector, useDispatch } from "react-redux";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useDispatch } from "react-redux";
 import { TUpdateUserForm, updateUser } from "../../services/actions/auth";
+import { AppDispatch, useAppSelector } from "../../services/store";
 import useForm from "../hooks/useForm";
-import { AppDispatch, RootState } from "../../services/store";
+import profileInfoStyles from "./profile-info.module.css";
 
 export const ProfileInfo = () => {
-  const { user } = useSelector<RootState, any>((store) => store.auth);
+  const { user } = useAppSelector((store) => store.auth);
 
   const dispatch: AppDispatch = useDispatch();
   const [showButtons, setShowButtons] = useState(false);
