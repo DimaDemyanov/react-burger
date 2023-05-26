@@ -47,13 +47,21 @@ export const ws = (state = initialState, action: TWSActions) => {
       };
 
     case WS_GET_MESSAGE:
-      return {
-        ...state,
-        error: undefined,
-        orders: JSON.parse(action.message).orders,
-        totalOrders: JSON.parse(action.message).total,
-        totalOrdersToday: JSON.parse(action.message).totalToday,
-      };
+      if (action.messageType === "orders") {
+        return {
+          ...state,
+          error: undefined,
+          orders: JSON.parse(action.message).orders,
+          totalOrders: JSON.parse(action.message).total,
+          totalOrdersToday: JSON.parse(action.message).totalToday,
+        };
+      } else {
+        return {
+          ...state,
+          error: undefined,
+          userOrders: JSON.parse(action.message).orders,
+        };
+      }
 
     default:
       return state;

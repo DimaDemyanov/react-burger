@@ -1,9 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { getUser } from "../../services/actions/auth";
 import { getIngredients } from "../../services/actions/ingredients";
-import { AppDispatch, RootState } from "../../services/store";
+import {
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_START,
+} from "../../services/actions/ws";
+import { useAppDispatch, useAppSelector } from "../../services/store";
+import { WS_BURGER_BASE_API } from "../../utils/burger-api";
+import { getCookie } from "../../utils/cookie";
 import IngredientDetails from "../burger-ingredients/ingredient-details";
 import { Modal } from "../common/modal";
 import AppHeader from "../header/app-header";
@@ -23,10 +28,30 @@ import ProtectedRouteElement from "../utils/protected-route";
 import "./app.css";
 
 function App() {
-  const authChecked = useSelector<RootState>((state) => state.auth.authChecked);
+  const dispatch = useAppDispatch();
+  const wsUrl = WS_BURGER_BASE_API + "/orders/all";
+  const wsUserUrl =
+    WS_BURGER_BASE_API +
+    "/orders?token=" +
+    getCookie("accessToken")?.replace("Bearer", "").trimStart();
+
+  useEffect(() => {
+    dispatch({
+      type: WS_CONNECTION_START,
+      url: wsUrl,
+      userUrl: wsUserUrl,
+    });
+
+    return () => {
+      dispatch({
+        type: WS_CONNECTION_CLOSED,
+      });
+    };
+  }, [dispatch, wsUrl, wsUserUrl]);
+
+  const authChecked = useAppSelector((state) => state.auth.authChecked);
 
   const [loading, setLoading] = useState(true);
-  const dispatch: AppDispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -96,6 +121,14 @@ function App() {
                 element={<FeedOrderDetails isProfileOrder={false} />}
               />
               <Route
+                path="/profile/orders/:id"
+                element={
+                  <ProtectedRouteElement onlyUnAuth={false}>
+                    <FeedOrderDetails isProfileOrder={true} />
+                  </ProtectedRouteElement>
+                }
+              />
+              <Route
                 path="/profile"
                 element={
                   <ProtectedRouteElement onlyUnAuth={false}>
@@ -105,14 +138,6 @@ function App() {
               >
                 <Route index element={<ProfileInfo />} />
                 <Route path="orders" element={<ProfileOrders />} />
-                <Route
-                  path="orders/:id"
-                  element={
-                    <ProtectedRouteElement onlyUnAuth={false}>
-                      <FeedOrderDetails isProfileOrder={true} />
-                    </ProtectedRouteElement>
-                  }
-                />
               </Route>
               <Route path="/ingredients/:id" element={<IngredientDetails />} />
               <Route path="/*" element={<NotFound />} />
@@ -133,23 +158,15 @@ function App() {
                 <Route
                   path="/feed/:id"
                   element={
-                    <Modal
-                      onCloseClick={onModalClose}
-                      // showId={true}
-                      // isProfileOrder={false}
-                    >
-                      <FeedOrderDetails isProfileOrder={true} />
+                    <Modal onCloseClick={onModalClose}>
+                      <FeedOrderDetails isProfileOrder={false} />
                     </Modal>
                   }
                 />
                 <Route
                   path="/profile/orders/:id"
                   element={
-                    <Modal
-                      onCloseClick={onModalClose}
-                      // showId={true}
-                      // isProfileOrder={true}
-                    >
+                    <Modal onCloseClick={onModalClose}>
                       <ProtectedRouteElement onlyUnAuth={false}>
                         <FeedOrderDetails isProfileOrder={true} />
                       </ProtectedRouteElement>

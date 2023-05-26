@@ -18,6 +18,27 @@ import {
   TUserActions,
 } from "../actions/auth";
 
+interface IAuthState {
+  user: any;
+  registerRequest: boolean;
+  registerFailed: boolean;
+
+  loginRequest: boolean;
+  loginFailed: boolean;
+
+  logoutRequest: boolean;
+  logoutFailed: boolean;
+
+  getUserRequest: boolean;
+  getUserFailed: boolean;
+
+  updateUserRequest: boolean;
+  updateUserFailed: boolean;
+
+  isLoggedIn: boolean;
+  authChecked: boolean;
+}
+
 const initialState = {
   user: null,
   registerRequest: false,
@@ -39,7 +60,10 @@ const initialState = {
   authChecked: false,
 };
 
-export const auth = (state: any = initialState, action: TUserActions) => {
+export const auth = (
+  state: IAuthState = initialState,
+  action: TUserActions
+) => {
   switch (action.type) {
     case AUTH_REGISTER_REQUEST: {
       return {

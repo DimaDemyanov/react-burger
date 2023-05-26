@@ -1,13 +1,16 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { FC, RefObject, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../services/store";
+import { TIngredient } from "../../utils/types";
 import ingredientStyles from "./burger-ingredients.module.css";
 import IngredientsGroup, { Type } from "./ingredient-group";
-import { RootState } from "../../services/store";
-import { TIngredient } from "../../utils/types";
 
 interface IIngredientTabs {
-  refs: { bunHeaderRef: RefObject<HTMLDivElement>, sauceHeaderRef: RefObject<HTMLDivElement | undefined>, mainHeaderRef: RefObject<HTMLDivElement | undefined>}
+  refs: {
+    bunHeaderRef: RefObject<HTMLDivElement>;
+    sauceHeaderRef: RefObject<HTMLDivElement | undefined>;
+    mainHeaderRef: RefObject<HTMLDivElement | undefined>;
+  };
 }
 
 const IngredientTabs: FC<IIngredientTabs> = ({
@@ -51,7 +54,9 @@ const IngredientTabs: FC<IIngredientTabs> = ({
 };
 
 const BurgerIngredients = () => {
-  const ingredients: ReadonlyArray<TIngredient> = useSelector<RootState, ReadonlyArray<TIngredient>>((state) => state.ingredients);
+  const ingredients: ReadonlyArray<TIngredient> = useAppSelector(
+    (state) => state.ingredients
+  );
 
   const bunHeaderRef = useRef<HTMLDivElement>(null);
   const sauceHeaderRef = useRef<HTMLDivElement>(null);

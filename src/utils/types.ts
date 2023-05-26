@@ -24,6 +24,11 @@ export type TIngredient = {
 
 export type TIngredientsArray = Array<TIngredient>;
 
+export type TUser = {
+  email: string;
+  name: string;
+}
+
 export type TOrder = {
   createdAt: string;
   ingredients: string[];

@@ -1,12 +1,11 @@
 import styles from "./profile-navigation.module.css";
 
-import { useDispatch } from "react-redux";
-import { ProfileLink } from "../profile-link/profile-link";
 import { logout } from "../../services/actions/auth";
-import { AppDispatch } from "../../services/store";
+import { AppDispatch, useAppDispatch } from "../../services/store";
+import { ProfileLink } from "../profile-link/profile-link";
 
 export function ProfileNavigation({ className }: { className: string }) {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
   const handleLogout = async () => {
     dispatch(logout());
   };

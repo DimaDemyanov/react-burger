@@ -9,6 +9,7 @@ export const WS_GET_MESSAGE: "WS_GET_MESSAGE" = "WS_GET_MESSAGE";
 export interface IWSConnectionStartAction {
   readonly type: typeof WS_CONNECTION_START;
   readonly url: string;
+  readonly userUrl: string;
 }
 
 export interface IWSConnectionSuccessAction {
@@ -28,6 +29,7 @@ export interface IWSConnectionClosedAction {
 export interface IWSGetMessageAction {
   readonly type: typeof WS_GET_MESSAGE;
   readonly message: string;
+  readonly messageType: "orders" | "userOrders";
 }
 
 export type TWSActions =

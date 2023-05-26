@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../services/store";
 import { countTotalById, getIngredientInfoById } from "../../utils/helpers";
 import styles from "./feed-order.module.css";
+import Preloader from "../preloader/preloader";
 
 const formatStatus = (status: string) => {
   switch (status) {
@@ -22,16 +23,23 @@ const formatStatus = (status: string) => {
 
 function FeedOrder({
   isModal,
+  isProfileOrder
 }: {
   isModal: boolean;
   isProfileOrder: boolean;
 }): JSX.Element {
   const { id } = useParams();
 
-  const order = useAppSelector((store) => {
-    return store.ws.orders.find((el: any) => el.number + "" === id);
+  const orders = useAppSelector((store) => {
+    return isProfileOrder ? store.ws.userOrders : store.ws.orders;
   });
   const ingredients = useAppSelector((store) => store.ingredients);
+
+  const order = orders?.find((el: any) => el.number + '' === id);
+
+  if (!order) {
+    return <Preloader />;
+  }
 
   const urlPriceQtyList = getIngredientInfoById(
     order!.ingredients,

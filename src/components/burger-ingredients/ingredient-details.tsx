@@ -1,13 +1,12 @@
-import ingredientsStyles from "./burger-ingredients.module.css";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { FC } from "react";
+import { useParams } from "react-router-dom";
+import { useAppSelector } from "../../services/store";
 import { TIngredient } from "../../utils/types";
-import { RootState } from "../../services/store";
+import ingredientsStyles from "./burger-ingredients.module.css";
 
 interface ICompositionStatProps {
-  type: string,
-  stat?: number
+  type: string;
+  stat?: number;
 }
 
 const CompositionStat: FC<ICompositionStatProps> = ({ type, stat }) => {
@@ -22,11 +21,13 @@ const CompositionStat: FC<ICompositionStatProps> = ({ type, stat }) => {
 };
 
 const IngredientDetails = () => {
-  const { id } = useParams();  
-  const ingredients: ReadonlyArray<TIngredient> = useSelector<RootState, ReadonlyArray<TIngredient>>((store) => store.ingredients);
+  const { id } = useParams();
+  const ingredients: ReadonlyArray<TIngredient> = useAppSelector(
+    (store) => store.ingredients
+  );
 
   const ingredient = ingredients.find((el) => el._id === id);
-  
+
   if (!ingredient) {
     return null;
   }

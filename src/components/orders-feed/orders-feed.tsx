@@ -1,32 +1,11 @@
-import React, { FC, useEffect } from "react";
-import styles from "./orders-feed.module.css";
-import OrdersFeedItem from "../orders-feed-item/orders-feed-item";
-import { useLocation, Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../services/store";
+import { FC } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useAppSelector } from "../../services/store";
 import { TOrder } from "../../utils/types";
-import { WS_BURGER_BASE_API } from "../../utils/burger-api";
-import {
-  WS_CONNECTION_CLOSED,
-  WS_CONNECTION_START,
-} from "../../services/actions/ws";
+import OrdersFeedItem from "../orders-feed-item/orders-feed-item";
+import styles from "./orders-feed.module.css";
 
 const OrdersFeed: FC = () => {
-  const dispatch = useAppDispatch();
-  const wsUrl = WS_BURGER_BASE_API + "/orders/all";
-
-  useEffect(() => {
-    dispatch({
-      type: WS_CONNECTION_START,
-      url: wsUrl,
-    });
-
-    return () => {
-      dispatch({
-        type: WS_CONNECTION_CLOSED,
-      });
-    };
-  }, [dispatch, wsUrl]);
-
   const { orders } = useAppSelector((store) => store.ws);
   const location = useLocation();
 
