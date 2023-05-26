@@ -1,7 +1,6 @@
 import { FC } from "react";
-import { useSelector } from "react-redux";
-import { useLocation, Navigate } from "react-router-dom";
-import { RootState } from "../../services/store";
+import { Navigate, useLocation } from "react-router-dom";
+import { useAppSelector } from "../../services/store";
 
 interface IProtectedRouteElement {
   onlyUnAuth: boolean;
@@ -12,10 +11,7 @@ const ProtectedRouteElement: FC<IProtectedRouteElement> = ({
   onlyUnAuth = false,
   children,
 }) => {
-  const { isLoggedIn, user } = useSelector<
-    RootState,
-    { isLoggedIn: boolean; user: any }
-  >((store) => store.auth);
+  const { isLoggedIn, user } = useAppSelector((store) => store.auth);
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 

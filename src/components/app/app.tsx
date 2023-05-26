@@ -1,38 +1,65 @@
-import AppHeader from "../header/app-header";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import IngredientDetails from "../burger-ingredients/ingredient-details";
-import { getIngredients } from "../../services/actions/ingredients";
+import { useCallback, useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { Login } from "../pages/login";
-import { Register } from "../pages/register";
-import { ForgotPassword } from "../pages/forgot-password";
-import { ResetPassword } from "../pages/reset-password";
-import { Profile } from "../pages/profile";
 import { getUser } from "../../services/actions/auth";
-import Constructor from "../pages/constructor";
-import { NotFound } from "../pages/not-found";
-import ProtectedRouteElement from "../utils/protected-route";
-import { ProfileInfo } from "../profile-info/profile-info";
+import { getIngredients } from "../../services/actions/ingredients";
+import {
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_START,
+} from "../../services/actions/ws";
+import { useAppDispatch, useAppSelector } from "../../services/store";
+import { WS_BURGER_BASE_API } from "../../utils/burger-api";
+import { getCookie } from "../../utils/cookie";
+import IngredientDetails from "../burger-ingredients/ingredient-details";
 import { Modal } from "../common/modal";
-import "./app.css";
+import AppHeader from "../header/app-header";
+import Constructor from "../pages/constructor";
+import { FeedPage } from "../pages/feed";
+import { FeedOrderDetails } from "../pages/feed-order-details";
+import { ForgotPassword } from "../pages/forgot-password";
+import { Login } from "../pages/login";
+import { NotFound } from "../pages/not-found";
+import { Profile } from "../pages/profile";
+import { Register } from "../pages/register";
+import { ResetPassword } from "../pages/reset-password";
 import Preloader from "../preloader/preloader";
+import { ProfileInfo } from "../profile-info/profile-info";
 import { ProfileOrders } from "../profile-orders/profile-orders";
-import { AppDispatch, RootState } from "../../services/store";
+import ProtectedRouteElement from "../utils/protected-route";
+import "./app.css";
 
 function App() {
-  const authChecked = useSelector<RootState>(state => state.auth.authChecked);
+  const dispatch = useAppDispatch();
+  const wsUrl = WS_BURGER_BASE_API + "/orders/all";
+  const wsUserUrl =
+    WS_BURGER_BASE_API +
+    "/orders?token=" +
+    getCookie("accessToken")?.replace("Bearer", "").trimStart();
+
+  useEffect(() => {
+    dispatch({
+      type: WS_CONNECTION_START,
+      url: wsUrl,
+      userUrl: wsUserUrl,
+    });
+
+    return () => {
+      dispatch({
+        type: WS_CONNECTION_CLOSED,
+      });
+    };
+  }, [dispatch, wsUrl, wsUserUrl]);
+
+  const authChecked = useAppSelector((state) => state.auth.authChecked);
 
   const [loading, setLoading] = useState(true);
-  const dispatch: AppDispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
   const background = location.state && location.state.background;
 
-  const closeIngredientDetails = () => {
+  const onModalClose = useCallback(() => {
     navigate(-1);
-  };
+  }, [navigate]);
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -88,6 +115,19 @@ function App() {
                   </ProtectedRouteElement>
                 }
               />
+              <Route path="/feed" element={<FeedPage />} />
+              <Route
+                path="/feed/:id"
+                element={<FeedOrderDetails isProfileOrder={false} />}
+              />
+              <Route
+                path="/profile/orders/:id"
+                element={
+                  <ProtectedRouteElement onlyUnAuth={false}>
+                    <FeedOrderDetails isProfileOrder={true} />
+                  </ProtectedRouteElement>
+                }
+              />
               <Route
                 path="/profile"
                 element={
@@ -108,10 +148,28 @@ function App() {
                   path="/ingredients/:id"
                   element={
                     <Modal
-                      onCloseClick={closeIngredientDetails}
+                      onCloseClick={onModalClose}
                       header={"Детали ингредиента"}
                     >
                       <IngredientDetails />
+                    </Modal>
+                  }
+                />
+                <Route
+                  path="/feed/:id"
+                  element={
+                    <Modal onCloseClick={onModalClose}>
+                      <FeedOrderDetails isProfileOrder={false} />
+                    </Modal>
+                  }
+                />
+                <Route
+                  path="/profile/orders/:id"
+                  element={
+                    <Modal onCloseClick={onModalClose}>
+                      <ProtectedRouteElement onlyUnAuth={false}>
+                        <FeedOrderDetails isProfileOrder={true} />
+                      </ProtectedRouteElement>
                     </Modal>
                   }
                 />

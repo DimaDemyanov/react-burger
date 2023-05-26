@@ -2,15 +2,15 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch } from "react-redux";
-import constructorStyles from "./burger-constructor.module.css";
 import { FC, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import {
   MOVE_INGREDIENT,
   REMOVE_CONSTRUCTOR_INGREDIENT,
 } from "../../services/actions/constructor-ingredients";
+import { useAppDispatch } from "../../services/store";
 import { TIngredient } from "../../utils/types";
+import constructorStyles from "./burger-constructor.module.css";
 
 interface IMainIngredientProps {
   ingredient: TIngredient;
@@ -18,7 +18,7 @@ interface IMainIngredientProps {
 }
 
 const MainIngredient: FC<IMainIngredientProps> = ({ ingredient, index }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // Следующий код взят по сыллку от куратора из https://codesandbox.io/embed/react-dnd-rtk-ofjc4h?codemirror=1 и адаптирован под текущий проект
   const ref = useRef<HTMLDivElement>(null);

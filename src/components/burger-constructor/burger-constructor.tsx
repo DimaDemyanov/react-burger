@@ -4,11 +4,15 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
 import { useDrop } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createAddConstructorIngredientAction } from "../../services/actions/constructor-ingredients";
 import { postOrder } from "../../services/actions/send-order";
-import { AppDispatch } from "../../services/store";
+import {
+  AppDispatch,
+  useAppDispatch,
+  useAppSelector,
+} from "../../services/store";
+import { countSum } from "../../utils/helpers";
 import { TIngredient } from "../../utils/types";
 import Price from "../common/price";
 import constructorStyles from "./burger-constructor.module.css";
@@ -20,10 +24,10 @@ const BurgerConstructor = () => {
     constructorIngredients: { bun, ingredients },
     orderNumber,
     auth: { isLoggedIn },
-  } = useSelector<any, any>((state) => state);
+  } = useAppSelector((state) => state);
   const navigate = useNavigate();
 
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
 
   const [, dropTarget] = useDrop<{ ingredient: TIngredient }>({
     accept: "ingredient",
@@ -53,13 +57,6 @@ const BurgerConstructor = () => {
 
   const onOrderDetailsCloseClick = () => {
     setOrderDetailsVisible(false);
-  };
-
-  const countSum = (ingredients: ReadonlyArray<TIngredient>) => {
-    return (
-      ingredients.reduce((partialSum, a) => partialSum + a.price, 0) +
-      (bun ? bun.price * 2 : 0)
-    );
   };
 
   return (
@@ -96,7 +93,7 @@ const BurgerConstructor = () => {
       )}
 
       <div className={`${constructorStyles.makeOrder} mt-10`}>
-        <Price price={countSum(ingredients)} textSize="medium" />
+        <Price price={countSum(ingredients, bun)} textSize="medium" />
         <div className="ml-10">
           {ingredients.length > 0 && bun && (
             <Button

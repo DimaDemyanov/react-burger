@@ -5,7 +5,7 @@ import profileStyles from "./profile.module.css";
 export const Profile = () => {
   return (
     <div className={profileStyles.profileContainer}>
-      <ProfileNavigation />
+      <ProfileNavigation className="mt-20" />
       <Outlet />
     </div>
   );

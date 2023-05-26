@@ -1,4 +1,3 @@
-import { AnyAction } from "redux";
 import {
   AUTH_REGISTER_REQUEST,
   AUTH_REGISTER_SUCCESS,
@@ -16,7 +15,29 @@ import {
   AUTH_UPDATE_USER_SUCCESS,
   AUTH_UPDATE_USER_FAILED,
   AUTH_CHECKED,
+  TUserActions,
 } from "../actions/auth";
+
+interface IAuthState {
+  user: any;
+  registerRequest: boolean;
+  registerFailed: boolean;
+
+  loginRequest: boolean;
+  loginFailed: boolean;
+
+  logoutRequest: boolean;
+  logoutFailed: boolean;
+
+  getUserRequest: boolean;
+  getUserFailed: boolean;
+
+  updateUserRequest: boolean;
+  updateUserFailed: boolean;
+
+  isLoggedIn: boolean;
+  authChecked: boolean;
+}
 
 const initialState = {
   user: null,
@@ -39,7 +60,10 @@ const initialState = {
   authChecked: false,
 };
 
-export const authReducer = (state: any = initialState, action: AnyAction) => {
+export const auth = (
+  state: IAuthState = initialState,
+  action: TUserActions
+) => {
   switch (action.type) {
     case AUTH_REGISTER_REQUEST: {
       return {

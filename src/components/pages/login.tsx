@@ -3,16 +3,15 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FormEvent, useState } from "react";
-import loginStyles from "./login.module.css";
-import { useDispatch } from "react-redux";
-import { login } from "../../services/actions/auth";
 import { Link } from "react-router-dom";
-import { AppDispatch } from "../../services/store";
+import { login } from "../../services/actions/auth";
+import { AppDispatch, useAppDispatch } from "../../services/store";
+import loginStyles from "./login.module.css";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();

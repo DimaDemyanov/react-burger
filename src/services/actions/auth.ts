@@ -9,27 +9,108 @@ import {
 import { setCookie, deleteCookie } from "../../utils/cookie";
 import { ThunkAction } from "redux-thunk";
 
-export const AUTH_REGISTER_REQUEST = "AUTH/REGISTER_REQUEST";
-export const AUTH_REGISTER_SUCCESS = "AUTH/REGISTER_SUCCESS";
-export const AUTH_REGISTER_FAILED = "AUTH/REGISTER_FAILED";
+export const AUTH_REGISTER_REQUEST = "AUTH_REGISTER_REQUEST";
+export const AUTH_REGISTER_SUCCESS = "AUTH_REGISTER_SUCCESS";
+export const AUTH_REGISTER_FAILED = "AUTH_REGISTER_FAILED";
+export const AUTH_LOGIN_REQUEST = "AUTH_LOGIN_REQUEST";
+export const AUTH_LOGIN_SUCCESS = "AUTH_LOGIN_SUCCESS";
+export const AUTH_LOGIN_FAILED = "AUTH_LOGIN_FAILED";
+export const AUTH_LOGOUT_REQUEST = "AUTH_LOGOUT_REQUEST";
+export const AUTH_LOGOUT_SUCCESS = "AUTH_LOGOUT_SUCCESS";
+export const AUTH_LOGOUT_FAILED = "AUTH_LOGOUT_FAILED";
+export const AUTH_GET_USER_REQUEST = "AUTH_GET_USER_REQUEST";
+export const AUTH_GET_USER_SUCCESS = "AUTH_GET_USER_SUCCESS";
+export const AUTH_GET_USER_FAILED = "AUTH_GET_USER_FAILED";
+export const AUTH_UPDATE_USER_REQUEST = "AUTH_UPDATE_USER_REQUEST";
+export const AUTH_UPDATE_USER_SUCCESS = "AUTH_UPDATE_USER_SUCCESS";
+export const AUTH_UPDATE_USER_FAILED = "AUTH_UPDATE_USER_FAILED";
+export const AUTH_CHECKED = "AUTH_AUTH_CHECKED";
 
-export const AUTH_LOGIN_REQUEST = "AUTH/LOGIN_REQUEST";
-export const AUTH_LOGIN_SUCCESS = "AUTH/LOGIN_SUCCESS";
-export const AUTH_LOGIN_FAILED = "AUTH/LOGIN_FAILED";
+export interface IAuthRegisterRequestAction {
+  readonly type: typeof AUTH_REGISTER_REQUEST;
+}
 
-export const AUTH_LOGOUT_REQUEST = "AUTH/LOGOUT_REQUEST";
-export const AUTH_LOGOUT_SUCCESS = "AUTH/LOGOUT_SUCCESS";
-export const AUTH_LOGOUT_FAILED = "AUTH/LOGOUT_FAILED";
+export interface IAuthRegisterSuccessAction {
+  readonly type: typeof AUTH_REGISTER_SUCCESS;
+  user: TRegisterForm;
+}
 
-export const AUTH_GET_USER_REQUEST = "AUTH/GET_USER_REQUEST";
-export const AUTH_GET_USER_SUCCESS = "AUTH/GET_USER_SUCCESS";
-export const AUTH_GET_USER_FAILED = "AUTH/GET_USER_FAILED";
+export interface IAuthRegisterFailedAction {
+  readonly type: typeof AUTH_REGISTER_FAILED;
+}
 
-export const AUTH_UPDATE_USER_REQUEST = "AUTH/UPDATE_USER_REQUEST";
-export const AUTH_UPDATE_USER_SUCCESS = "AUTH/UPDATE_USER_SUCCESS";
-export const AUTH_UPDATE_USER_FAILED = "AUTH/UPDATE_USER_FAILED";
+export interface IAuthLoginRequestAction {
+  readonly type: typeof AUTH_LOGIN_REQUEST;
+}
 
-export const AUTH_CHECKED = "AUTH/AUTH_CHECKED";
+export interface IAuthLoginSuccessAction {
+  readonly type: typeof AUTH_LOGIN_SUCCESS;
+  user: TRegisterForm;
+}
+
+export interface IAuthLoginFailedAction {
+  readonly type: typeof AUTH_LOGIN_FAILED;
+}
+
+export interface IAuthLogoutRequestAction {
+  readonly type: typeof AUTH_LOGOUT_REQUEST;
+}
+
+export interface IAuthLogoutSuccessAction {
+  readonly type: typeof AUTH_LOGOUT_SUCCESS;
+}
+
+export interface IAuthLogoutFailedAction {
+  readonly type: typeof AUTH_LOGOUT_FAILED;
+}
+
+export interface IAuthGetUserRequestAction {
+  readonly type: typeof AUTH_GET_USER_REQUEST;
+}
+
+export interface IAuthGetUserSuccessAction {
+  readonly type: typeof AUTH_GET_USER_SUCCESS;
+  user: TRegisterForm;
+}
+
+export interface IAuthGetUserFailedAction {
+  readonly type: typeof AUTH_GET_USER_FAILED;
+}
+
+export interface IAuthUpdateUserRequestAction {
+  readonly type: typeof AUTH_UPDATE_USER_REQUEST;
+}
+
+export interface IAuthUpdateUserSuccessAction {
+  readonly type: typeof AUTH_UPDATE_USER_SUCCESS;
+  user: TRegisterForm;
+}
+
+export interface IAuthUpdateUserFailedAction {
+  readonly type: typeof AUTH_UPDATE_USER_FAILED;
+}
+
+export interface IAuthCheckedAction {
+  readonly type: typeof AUTH_CHECKED;
+  payload: any;
+}
+
+export type TUserActions = IAuthRegisterRequestAction |
+  IAuthRegisterSuccessAction | 
+  IAuthRegisterFailedAction | 
+  IAuthLoginRequestAction |
+  IAuthLoginSuccessAction |
+  IAuthLoginFailedAction |
+  IAuthLogoutRequestAction |
+  IAuthLogoutSuccessAction | 
+  IAuthLogoutFailedAction | 
+  IAuthGetUserRequestAction |
+  IAuthGetUserSuccessAction | 
+  IAuthGetUserFailedAction | 
+  IAuthUpdateUserRequestAction |
+  IAuthUpdateUserSuccessAction | 
+  IAuthUpdateUserFailedAction |
+  IAuthCheckedAction;
 
 export type TRegisterForm = {
   name: string;

@@ -1,22 +1,25 @@
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import React, { FC } from "react";
 import ReactDOM from "react-dom";
 import modalStyles from "./modal.module.css";
-import React, { FC } from "react";
 
 const modalRoot = document.getElementById("react-modals")!;
 
 export interface IModalProps {
-  header?: string,
-  onCloseClick: () => void,
-  children?: React.ReactNode
+  header?: string;
+  onCloseClick: () => void;
+  children?: React.ReactNode;
 }
 
 const Modal: FC<IModalProps> = ({ header, onCloseClick, children }) => {
-  const escFunction = React.useCallback<(e: KeyboardEvent) => void>((event) => {
-    if (event.key === "Escape") {
-      onCloseClick();
-    }
-  }, [onCloseClick]);
+  const escFunction = React.useCallback<(e: KeyboardEvent) => void>(
+    (event) => {
+      if (event.key === "Escape") {
+        onCloseClick();
+      }
+    },
+    [onCloseClick]
+  );
 
   React.useEffect(() => {
     document.addEventListener("keydown", escFunction, false);

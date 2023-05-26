@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.statuses {
+  display: flex;
+  gap: 36px;
+  width: 100%;
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  max-height: 200px;
+  width: 50%;
+}
+
+.numbers {
+  display: flex;
+  height: auto;
+  flex-wrap: wrap;
+  height: 100%;
+  color: #00cccc;
+  overflow-y: scroll;
+}
+
+.number {
+  flex: 50%;
+}

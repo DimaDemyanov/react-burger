@@ -7,6 +7,7 @@ import { getCookie, setCookie } from "./cookie";
 import { TIngredient } from "./types";
 
 const BURGER_BASE_API = "https://norma.nomoreparties.space/api";
+export const WS_BURGER_BASE_API = "wss://norma.nomoreparties.space";
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   return fetch(url, options).then<T, T>(checkResponse);

@@ -2,17 +2,20 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import profileInfoStyles from "./profile-info.module.css";
-import { useSelector, useDispatch } from "react-redux";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { TUpdateUserForm, updateUser } from "../../services/actions/auth";
+import {
+  AppDispatch,
+  useAppDispatch,
+  useAppSelector,
+} from "../../services/store";
 import useForm from "../hooks/useForm";
-import { AppDispatch, RootState } from "../../services/store";
+import profileInfoStyles from "./profile-info.module.css";
 
 export const ProfileInfo = () => {
-  const { user } = useSelector<RootState, any>((store) => store.auth);
+  const { user } = useAppSelector((store) => store.auth);
 
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
   const [showButtons, setShowButtons] = useState(false);
   const [passwordChanged, setPasswordChanged] = useState(false);
   const [form, handleChange, setForm] = useForm<TUpdateUserForm>({
