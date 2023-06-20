@@ -60,10 +60,7 @@ const initialState = {
   authChecked: false,
 };
 
-export const auth = (
-  state: IAuthState = initialState,
-  action: TUserActions
-) => {
+export const auth = (state: IAuthState = initialState, action: TUserActions) => {
   switch (action.type) {
     case AUTH_REGISTER_REQUEST: {
       return {
@@ -174,9 +171,9 @@ export const auth = (
           ...state.user,
           username: user.name,
           email: user.email,
-          updateUserRequest: false,
-          updateUserFailed: false,
         },
+        updateUserRequest: false,
+        updateUserFailed: false,
       };
     }
     case AUTH_UPDATE_USER_FAILED: {

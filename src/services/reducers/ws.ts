@@ -6,7 +6,7 @@ import {
   WS_GET_MESSAGE,
 } from "../actions/ws";
 
-type TWSState = {
+export type TWSState = {
   wsConnected: boolean;
   orders: [];
   userOrders: [];

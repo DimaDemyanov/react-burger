@@ -17,7 +17,7 @@ describe("order reducer", () => {
 
   it("should handle GET_ORDER_NUMBER_FAILED", () => {
     expect(
-      orderNumber("-", {
+      orderNumber("123", {
         type: GET_ORDER_NUMBER_FAILED,
       })
     ).toEqual("-");

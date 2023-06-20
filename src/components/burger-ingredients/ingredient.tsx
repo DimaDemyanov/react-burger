@@ -29,7 +29,7 @@ const Ingredient: FC<IIngredientProps> = ({ ingredient }) => {
   });
 
   return (
-    <div className={`${ingredientsStyles.ingredient} ml-4`} ref={dragRef}>
+    <div className={`${ingredientsStyles.ingredient} ml-4`} ref={dragRef} data-cy={ingredient.type}>
       <img
         src={ingredient.image}
         className={`${ingredientsStyles.ingredientImg} ml-4`}

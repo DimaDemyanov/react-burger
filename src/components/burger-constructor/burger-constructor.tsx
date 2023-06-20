@@ -63,8 +63,9 @@ const BurgerConstructor = () => {
     <div
       className={`${constructorStyles.container} ml-10 pt-25`}
       ref={dropTarget}
+      data-cy="drop-area"
     >
-      {bun && (
+      {bun && ( 
         <ConstructorElement
           type="top"
           isLocked={true}
@@ -94,13 +95,14 @@ const BurgerConstructor = () => {
 
       <div className={`${constructorStyles.makeOrder} mt-10`}>
         <Price price={countSum(ingredients, bun)} textSize="medium" />
-        <div className="ml-10">
+        <div className="ml-10" data-cy="make-order">
           {ingredients.length > 0 && bun && (
             <Button
               htmlType="button"
               type="primary"
               size="medium"
               onClick={onClickMakeOrder}
+
             >
               Оформить заказ
             </Button>
