@@ -35,7 +35,7 @@ const Modal: FC<IModalProps> = ({ header, onCloseClick, children }) => {
       <div className={modalStyles.modal}>
         <div className={`${modalStyles.modalHeader} mt-10`}>
           <p className={`text text_type_main-large`}>{header ?? ""}</p>
-          <div className={modalStyles.modalClose}>
+          <div className={modalStyles.modalClose} data-cy="close-modal">
             <CloseIcon type="primary" onClick={onCloseClick} />
           </div>
         </div>
@@ -47,7 +47,7 @@ const Modal: FC<IModalProps> = ({ header, onCloseClick, children }) => {
 };
 
 const ModalOverlay = ({ onCloseClick }: { onCloseClick: () => void }) => {
-  return <div className={modalStyles.overlay} onClick={onCloseClick} />;
+  return <div className={modalStyles.overlay} onClick={onCloseClick} data-cy="modal-overlay" />;
 };
 
 export { Modal, ModalOverlay };
